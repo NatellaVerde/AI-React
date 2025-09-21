@@ -7,13 +7,13 @@ function App() {
 
    useEffect(() => {
       fetch('/api/hello')
-   .then((res) => res.json())
+         .then((res) => res.json())
          .then((data) => setMessage(data.message));
    });
 
    return (
       <div className="p-4">
-    <p className="font-bold p-4">{message}</p>
+         <p className="font-bold p-4">{message}</p>
          <Button>Click me</Button>
       </div>
    );
