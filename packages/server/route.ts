@@ -13,7 +13,7 @@ router.get('/api/hello', (req: Request, res: Response) => {
 });
 
 router.post('/api/chat', async (req: Request, res: Response) => {
-   chatController.sendMessage;
+   chatController.sendMessage(req, res);
 });
 
 export default router;

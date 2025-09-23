@@ -14,6 +14,7 @@ export const chatService = {
       prompt: string,
       conversationId: string
    ): Promise<ChatResponse> {
+      console.log('hello', prompt);
       const response = await client.responses.create({
          model: 'gpt-4o-mini',
          input: prompt,
