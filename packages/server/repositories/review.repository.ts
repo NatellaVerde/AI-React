@@ -1,8 +1,9 @@
+import dayjs, { Dayjs } from 'dayjs';
 import { PrismaClient, type Review } from '../generated/prisma';
+const prisma = new PrismaClient();
 
 export const reviewRepository = {
    async getReviews(productId: number, limit?: number): Promise<Review[]> {
-      const prisma = new PrismaClient();
       return prisma.review.findMany({
          where: {
             productId,
@@ -14,7 +15,39 @@ export const reviewRepository = {
       });
    },
 
-   async summarizeReviews(productId: number): Promise<string> {
-      return '';
+   async storeReviewSummary(productId: number, summary: string) {
+      const now = new Date();
+      const expiresAt = dayjs().add(7, 'days').toDate();
+      const data = {
+         content: summary,
+         expiresAt,
+         generatedAt: now,
+         productId,
+      };
+
+      return prisma.summary.upsert({
+         where: { productId },
+         create: data,
+         update: data,
+      });
+   },
+
+   async getReviewSummary(productId: number): Promise<string | null> {
+      const summary = await prisma.summary.findFirst({
+         where: {
+            AND: [
+               {
+                  productId,
+               },
+               {
+                  expiresAt: {
+                     gt: new Date(),
+                  },
+               },
+            ],
+         },
+      });
+
+      return summary ? summary.content : null;
    },
 };
