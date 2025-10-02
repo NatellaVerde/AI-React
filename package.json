@@ -26,6 +26,7 @@
     "packages/*"
   ],
   "dependencies": {
+    "@tanstack/react-query": "^5.90.2",
     "dotenv": "^17.2.2",
     "react-hook-form": "^7.63.0",
     "react-icons": "^5.5.0",
